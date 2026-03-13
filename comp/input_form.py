@@ -3,55 +3,74 @@ from database import get_all_machines
 
 
 def create_input_form():
-    return html.Div ([
+    machines = get_all_machines() or []
+    machine_options = [{'label': f'#{m[0]}  {m[1]}', 'value': m[0]} for m in machines]
+    
+    return html.Div([
+        html.Div('Machine', className ='form-section-label'),
         html.Label('Select Machine'),
-        dcc.Dropdown(id='machine-selector', options=machine_selector(), value= None, style={
-        'backgroundColor': '#16213e',
-        'color': '#000000',
-        'border': '1px solid #2a2a4a'
-    }
+        dcc.Dropdown(id='machine-selector', options=machine_options,
+                     placeholder='Select machine...',
+                     style ={'fontSize': '13px'}),
 
-),
-        dcc.DatePickerSingle(id='shift-date', style={
-        'backgroundColor': "#ffffff",
-        'color': '#000000',
-        'border': '1px solid #2a2a4a'
-    }
-),
-        dcc.Dropdown(id='shift-selector', options=[{'label': 'Morning', 'value': 'morning'},
-                                                   {'label': 'Afternoon', 'value': 'afternoon'},
-                                                   {'label': 'Night', 'value': 'night'}], style={
-        'backgroundColor': '#16213e',
-        'color': '#000000',
-        'border': '1px solid #2a2a4a'
-    }
 
-),
-        dcc.Input(id='planned-production-time', type='number', placeholder = 'Enter planned production time (mins)'),
-        dcc.Input(id='actual-run-time', type='number', placeholder = 'Enter actual run time (mins)'),
-        dcc.Input(id='ideal-cycle-time', type='number', placeholder='Enter ideal cycle time (mins/unit)'),
-        dcc.Input(id='total-units-produced', type='number', placeholder='Enter total units produced'),
-        dcc.Input(id='good-units', type='number', placeholder='Enter good units'),
-        html.Button('Submit', id='submit-button'),
+        html.Div('Shift', className='form-section-label'),
+        html.Label('Data'),
+        dcc.DatePickerSingle(id='shift-date', placeholder='YYYY-MM-DD',
+                             display_format='YYYY-MM-DD',
+                             style ={'width': '100%'}),
+        
+        html.Label('Shift'),
+        dcc.Dropdown(id='shift-selector',
+                     options=[
+                         {'label': 'Morning', 'value':'morning'},
+                         {'label': 'Afternoon', 'value':'afternoon'},
+                         {'label': 'Night', 'value':'night'},
+                     ], placeholder='Select shift',
+                     ),
 
-        html.Hr(),
-        html.P('Or import from CSV/Excel:'),
+        html.Div('Production Data', className='form-section-label'),
+ 
+        html.Label('Planned Production Time (min)'),
+        dcc.Input(id='planned-production-time', type='number', placeholder='e.g. 480',
+                  style={'width': '100%'}),
+ 
+        html.Label('Actual Run Time (min)'),
+        dcc.Input(id='actual-run-time', type='number', placeholder='e.g. 440',
+                  style={'width': '100%'}),
+ 
+        html.Label('Ideal Cycle Time (min/unit)'),
+        dcc.Input(id='ideal-cycle-time', type='number', placeholder='e.g. 0.5',
+                  style={'width': '100%'}),
+ 
+        html.Label('Total Units Produced'),
+        dcc.Input(id='total-units-produced', type='number', placeholder='e.g. 800',
+                  style={'width': '100%'}),
+ 
+        html.Label('Good Units'),
+        dcc.Input(id='good-units', type='number', placeholder='e.g. 780',
+                  style={'width': '100%'}),
+ 
+        html.Button('→  Submit Log', id='submit-button', n_clicks=0),
+
+        
+        html.Div('Bulk Import', className='form-section-label'),
+
         dcc.Upload(
             id='upload-data',
-            children=html.Div(['Drag and Drop or ', html.A('Select File')]),
-            style={
-                'borderWidth': '1px',
-                'borderStyle': 'dashed',
-                'borderRadius': '5px',
-                'textAlign': 'center',
-                'padding': '10px'
-            }
-            ),
-        html.Div(id='upload-status')
-    ])
-
-def machine_selector():
-    machines = get_all_machines()
-    return [
-        {'label': name, 'value': id } for id, name, department in machines
-    ]
+            children=html.Div([
+                html.Div('Drag & Drop or Click', style={
+                    'fontFamily': 'IBM Plex Mono, monospace',
+                    'fontSize': '11px',
+                    'color': '#3d4255',
+                    'letterSpacing': '0.05em'
+                }),
+                html.Div('CSV / Excel', style={
+                    'fontFamily': 'IBM Plex Mono, monospace',
+                    'fontSize': '10px',
+                    'color': '#2a1f4a',
+                    'marginTop': '3px',
+                    'letterSpacing': '0.01em'}),
+            ]), multiple=False),
+    html.Div(id='upload-status'),
+])

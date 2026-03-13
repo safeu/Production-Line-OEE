@@ -23,6 +23,7 @@ env/
 .DS_Store
 Thumbs.db
 *.log
+*.csv
 .ipynb_checkpoints/
 
 

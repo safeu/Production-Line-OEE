@@ -4,6 +4,12 @@ A web-based dashboard for tracking and analyzing Overall Equipment Effectiveness
 
 ---
 
+## Preview
+
+![Dashboard Preview](assets/dashboard.png)
+
+---
+
 ## Features
 
 - Log production shift data manually through a web form
@@ -28,9 +34,9 @@ A web-based dashboard for tracking and analyzing Overall Equipment Effectiveness
 | Python | Core language |
 | Dash | Web dashboard framework |
 | Pandas | OEE computation and data manipulation |
-| Matplotlib | Chart generation |
 | SQLite | Local database storage |
 | Plotly | Chart rendering in Dash |
+| IBM Plex Mono | Dashboard typography (via Google Fonts) |
 
 ---
 
@@ -65,8 +71,8 @@ oee-calculator/
 
 **1. Clone the repository**
 ```bash
-git clone
-cd oee-calculator
+git clone https://github.com/safeu/production-line-oee.git
+cd production-line-oee
 ```
 
 **2. Install dependencies**
